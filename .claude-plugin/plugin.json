@@ -1,0 +1,17 @@
+{
+  "name": "shape",
+  "description": "Human-driven design and planning for Claude Code. You set the direction; Claude supplies terrain, objections, and structure, then carves the result into per-phase plan files an agent can execute.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Nick Crohn"
+  },
+  "repository": "https://github.com/ncrohn/shape",
+  "license": "MIT",
+  "keywords": [
+    "planning",
+    "design",
+    "spec",
+    "workflow",
+    "skill"
+  ]
+}
