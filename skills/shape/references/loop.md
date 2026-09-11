@@ -92,8 +92,13 @@ Before advancing the cursor:
 1. Replace the section's `TODO`, or extend the prose they wrote, with the
    settled answer in **their** words, not a paraphrase into yours.
 2. Add any decision-with-a-tradeoff as a one-line note under it.
-3. Append the raw exchange to `.shape/transcript.md`.
-4. Bump `cursor` in `state.json`.
+3. If the answer changes something an earlier section settled, say so in one
+   line — "§6 changes §2: the stamp now happens at presign" — and fix §2 now,
+   in their words. Confirm the rewrite in the same turn. An earlier section
+   left stale is the most common thing stage 4 finds, and the cheapest to fix
+   here.
+4. Append the raw exchange to `.shape/transcript.md`.
+5. Bump `cursor` in `state.json`.
 
 They can jump — "go back to section 3", "skip to phases". Follow it; move the
 cursor.
@@ -101,5 +106,6 @@ cursor.
 ## Ending
 
 After the last section, one paragraph: what changed during the loop, and any
-objection still live that they overruled. Then ask whether to carve phases. Do
-not carve them unprompted.
+objection still live that they overruled. Then go straight to stage 4 —
+`references/reconcile.md` — and read the whole document once. Do not ask
+whether to carve phases yet; that question belongs at the end of reconcile.

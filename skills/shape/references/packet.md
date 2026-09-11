@@ -21,6 +21,20 @@ request.
 
 One paragraph. The outcome, not the steps.
 
+## Context
+
+Read both before starting. The design is the whole reasoning; the log is what
+earlier phases actually shipped, which may differ from what was planned.
+
+- Design: `~/.shape/plans/upload-workspace-attribution/design.md`
+- Phase log: `~/.shape/plans/upload-workspace-attribution/index.md`, `## Log`
+- Branch: `upload-workspace-attribution/02-reads-new-field`, from
+  `upload-workspace-attribution/01-schema-write-path` (stacked). Your working
+  tree is on it when you start; the parent's changes are already present.
+
+If this packet disagrees with the design or the log, stop and say so in your
+final message. Do not pick one side.
+
 ## Decided
 
 These are settled. Do not redesign them; if one looks wrong, stop and say so
@@ -77,11 +91,18 @@ The literal command, and what passing looks like.
 
 ## Report back
 
-Final message: what changed, what you ran and what it returned, and anything
-you could not do. Facts only — no summary of the packet.
+Final message: what changed, what you ran and what it returned, anything you
+could not do, and every place the result differs from this packet — a check
+that moved layers, a field you did not add, a name you changed. The next phase
+reads that list. Facts only — no summary of the packet.
 ```
 
 ## Why each section is there
+
+**Context** is the cold agent's memory. It has none of the loop, and it has
+none of the phases before it. The design gives it the reasoning; the log gives
+it what actually shipped, which is what it is building on. A packet without it
+assumes the plan survived contact with the code, and by phase 3 it has not.
 
 **Decided** is what makes this a shape packet rather than a generic task file.
 A cold agent has none of the loop's context and will happily reopen a question

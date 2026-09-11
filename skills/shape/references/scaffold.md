@@ -81,9 +81,9 @@ designs die:
 
 Then one to four sections from the forks recon turned up, and always:
 
-6. **Phases** — their own first cut at shippable slices. Stage 4 argues with
+6. **Phases** — their own first cut at shippable slices. Stage 5 argues with
    this cut; it does not invent one from nothing.
-7. **Out of scope** — cheap to write, and it is what stops stage 4 sprawling.
+7. **Out of scope** — cheap to write, and it is what stops stage 5 sprawling.
 
 Drop any of the five that genuinely does not apply. A pure refactor has no
 rollout section. Do not pad.

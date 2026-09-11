@@ -60,8 +60,33 @@ lookup you are describing needs a user context that isn't there.
 > _
 ```
 
-**5. It carves the design into phase files** — one shippable pull request each,
+**5. It re-reads the whole document once.** The loop went section by section;
+this pass catches the places where §6's answer quietly changed what §2 settled,
+before anything is carved from it.
+
+**6. It carves the design into phase files** — one shippable pull request each,
 self-contained enough to hand to an agent that starts cold.
+
+**7. You execute phases one at a time**, usually each in a fresh session:
+
+```
+/shape execute upload-workspace-attribution
+```
+
+One phase per run, never more. Before it writes code, the session reads the
+design end to end, reads the log of what earlier phases actually shipped,
+re-verifies the packet's file paths, and asks whether the phase is still the
+right next move. After review it opens the pull request and writes the log
+entry the next phase will read. Phase 3 learns what phase 2 really did from
+disk, not from a session you had to keep alive.
+
+On GitHub, phases can ship as **stacked pull requests** — phase 2 branched from
+phase 1's branch, its PR based on phase 1, so each PR shows only its own diff
+and phase 2 can be built before phase 1 merges. That is decided per phase at
+handoff, by you, with the facts in front of you: whether it is reversible,
+whether it touches the parent's files, whether the repo runs CI on a PR based
+on a feature branch. When a parent squash-merges, `execute` checks whether
+GitHub rebased the child before touching anything.
 
 ## What it will not do
 
@@ -152,9 +177,11 @@ brew install ncrohn/glance/glance
 |---|---|
 | `/shape <idea>` | start a new shape |
 | `/shape resume [slug]` | pick up where you left off |
+| `/shape execute [slug] [n]` | run the next unmerged phase, or phase `n`, with the drift check |
 | `/shape list` | every shape and its stage |
 | `/shape archive <slug>` | retire a finished one |
 | `/shape --re-recon` | redo recon, keep your prose |
+| `/shape --reconcile` | re-read the whole design for contradictions, on demand |
 | `/shape --only <n>` | loop one section |
 
 In Codex, replace `/shape` with `$shape`. Everything after the skill name is
@@ -169,7 +196,7 @@ way to ask you a question. Where an agent lacks a nicety it degrades:
 |---|---|---|---|
 | Parallel recon | subagents | spawned agents | grep sweep in the main thread |
 | Build-it question | option picker | option picker | numbered list, then wait |
-| Fresh-session dispatch | `claude "execute <packet>"` | `codex "execute <packet>"` | print the packet path |
+| Fresh-session dispatch | `claude "/shape execute <slug>"` | `codex "$shape execute <slug>"` | print the packet path |
 
 ## License
 
