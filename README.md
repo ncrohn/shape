@@ -1,12 +1,13 @@
 # shape
 
-A planning skill for [Claude Code](https://claude.com/claude-code) where **you**
-design and Claude is the sounding board.
+A planning skill where **you** design and the agent is the sounding board.
+Works in [Claude Code](https://claude.com/claude-code) and
+[Codex](https://developers.openai.com/codex), CLI or desktop app.
 
-Most planning tools have the roles backwards. Claude writes the plan, you read
-it and say "looks good" — which makes you the reviewer of someone else's design
-instead of the author of your own. `shape` inverts that. Claude does the
-research and the arguing. Every decision is yours.
+Most planning tools have the roles backwards. The agent writes the plan, you
+read it and say "looks good" — which makes you the reviewer of someone else's
+design instead of the author of your own. `shape` inverts that. The agent does
+the research and the arguing. Every decision is yours.
 
 ## The flow
 
@@ -16,7 +17,9 @@ research and the arguing. Every decision is yours.
 /shape uploads need to remember which workspace they came from
 ```
 
-**2. Claude recons the code and hands you a scaffold.** Not a draft design — a
+(`$shape …` in Codex.)
+
+**2. The agent recons the code and hands you a scaffold.** Not a draft design — a
 form, with the questions the code says are actually undecided:
 
 ```markdown
@@ -41,7 +44,7 @@ Then it stops. It does not fill anything in.
 
 **3. You fill it in, in your editor.** Take ten minutes or take two days.
 
-**4. Claude walks it with you, one section per turn** — gaps and objections
+**4. The agent walks it with you, one section per turn** — gaps and objections
 against what you wrote:
 
 ```
@@ -66,30 +69,42 @@ self-contained enough to hand to an agent that starts cold.
 - Pick between forks on your behalf
 - Give you a menu of options with tradeoffs
 
-When Claude disagrees it objects, with a named failure mode and a cited line —
+When the agent disagrees it objects, with a named failure mode and a cited line —
 capped at two per section. Refute the premise and the objection is dropped, not
 downgraded and carried forward.
 
-If you want Claude to write the plan, use plan mode. This skill will refuse.
+If you want the agent to write the plan, use its plan mode. This skill will
+refuse.
 
 ## Install
+
+As a plugin. Claude Code:
 
 ```
 /plugin marketplace add ncrohn/claude-plugins
 /plugin install shape@ncrohn-plugins
 ```
 
-Or clone it straight into your skills directory:
+Codex:
+
+```
+codex plugin marketplace add ncrohn/claude-plugins
+codex plugin add shape@ncrohn-plugins
+```
+
+Or clone it and link the skill folder. Codex reads `~/.agents/skills`; Claude
+Code reads `~/.claude/skills`. Link both and one clone serves both agents:
 
 ```
 git clone https://github.com/ncrohn/shape.git
+ln -s "$PWD/shape/skills/shape" ~/.agents/skills/shape
 ln -s "$PWD/shape/skills/shape" ~/.claude/skills/shape
 ```
 
 ## The one-line offer
 
-A skill cannot volunteer itself. If you want Claude to suggest `shape` on work
-that warrants it, add this to your `CLAUDE.md`:
+A skill cannot volunteer itself. If you want the agent to suggest `shape` on
+work that warrants it, add this to your `CLAUDE.md` or `AGENTS.md`:
 
 ```markdown
 ## Shaping substantive work
@@ -141,6 +156,20 @@ brew install ncrohn/glance/glance
 | `/shape archive <slug>` | retire a finished one |
 | `/shape --re-recon` | redo recon, keep your prose |
 | `/shape --only <n>` | loop one section |
+
+In Codex, replace `/shape` with `$shape`. Everything after the skill name is
+the argument string.
+
+## What differs per agent
+
+Nothing in the flow. The skill needs file read/search, shell, file write, and a
+way to ask you a question. Where an agent lacks a nicety it degrades:
+
+| Capability | Claude Code | Codex | Without |
+|---|---|---|---|
+| Parallel recon | subagents | spawned agents | grep sweep in the main thread |
+| Build-it question | option picker | option picker | numbered list, then wait |
+| Fresh-session dispatch | `claude "execute <packet>"` | `codex "execute <packet>"` | print the packet path |
 
 ## License
 

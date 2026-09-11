@@ -5,7 +5,9 @@ feature, so do not assume and do not default.
 
 ## The question
 
-Use `AskUserQuestion`, header `"Build it"`:
+Ask one question, titled **Build it**, with these three options. Use a
+structured question tool if your agent has one; otherwise a numbered list, then
+stop and wait.
 
 1. **Fresh session per phase** — you print one command per phase and stop.
    Nothing fires.
@@ -31,9 +33,11 @@ against dispatching it unattended. No other recommendation. They pick.
 ## Fresh session
 
 One copyable line per phase, nothing else. The packet already says the rest.
+Print the form for the agent you are running in; if you cannot tell, print both.
 
 ```
 claude "execute ~/.shape/plans/<slug>/phases/01-upload-workspace-schema.md"
+codex  "execute ~/.shape/plans/<slug>/phases/01-upload-workspace-schema.md"
 ```
 
 ## Report

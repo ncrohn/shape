@@ -1,6 +1,6 @@
 ---
 name: shape
-description: Human-driven design and planning. The user sets the direction; you supply terrain, objections, and structure. Recon the change, hand them a tailored scaffold to fill in their editor, then walk it section by section raising gaps and objections, and carve the result into per-phase plan files an agent can execute. Use when the user runs /shape, or accepts the one-line offer on substantive work. For an AI-authored plan, use plan mode instead — this skill will refuse to design for them.
+description: Human-driven design and planning. The user sets the direction; you supply terrain, objections, and structure. Recon the change, hand them a tailored scaffold to fill in their editor, then walk it section by section raising gaps and objections, and carve the result into per-phase plan files an agent can execute. Use when the user invokes shape (/shape in Claude Code, $shape in Codex), or accepts the one-line offer on substantive work. For an AI-authored plan, use your agent's plan mode instead — this skill will refuse to design for them.
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion, mcp__glance__list_annotations, mcp__glance__get_annotation, mcp__glance__resolve_annotation
 argument-hint: "[<idea> | resume [slug] | list | archive <slug>] [--re-recon] [--only <n>]"
 ---
@@ -14,8 +14,23 @@ for them, never pick between forks on their behalf, and never present a menu of
 options for them to choose from. When you disagree, you object — with a named
 failure mode, not a question.
 
-If they want *you* to produce the design, plan mode is the right tool. This
-skill is the other direction and will disappoint them if you drive it.
+If they want *you* to produce the design, your agent's plan mode is the right
+tool. This skill is the other direction and will disappoint them if you drive
+it.
+
+## Runner
+
+This skill runs unchanged in Claude Code, Codex, and their desktop apps. It
+needs only: read and search files, run shell commands, write files, and ask the
+user a question. Where a step below names a capability your agent may lack, the
+fallback is given in place.
+
+- **Parallel helpers.** Claude Code subagents, Codex spawned agents, or none. If
+  none, do the sweep yourself with grep and read fewer files.
+- **Structured questions.** A question tool with options if your agent has one;
+  otherwise a numbered list in plain text, then stop and wait.
+- **Invocation.** `/shape <args>` in Claude Code, `$shape <args>` in Codex. The
+  text after the skill name is the argument string.
 
 ## Context loading
 
@@ -28,7 +43,7 @@ skill is the other direction and will disappoint them if you drive it.
 | `references/packet.md` | stage 4 — the phase-file format |
 | `references/handoff.md` | stage 5 |
 
-Load lazily, at the stage that needs it. Pass reference **paths** to subagents,
+Load lazily, at the stage that needs it. Pass reference **paths** to helpers,
 never contents.
 
 ## Workspace
@@ -57,7 +72,9 @@ their deletion.
 the user attach anchored comments to specific lines. When it is installed the
 review passes are richer; without it the flow is identical, just editor-only.
 
-Detect once, at stage 1: `command -v mdview`.
+Detect once, at stage 1: `command -v mdview`. The annotation tools come from
+the Glance MCP server; their names below are the bare tool names, whatever
+prefix your agent puts on MCP tools.
 
 | Present | Absent |
 |---|---|
@@ -70,7 +87,8 @@ that names `mdview` or an annotation means "if Glance is present".
 
 ## Route
 
-Parse `$ARGUMENTS`. The first token is the subcommand when it matches one.
+Parse the argument string — the text after the skill name in the user's
+message. The first token is the subcommand when it matches one.
 
 | Input | Do |
 |---|---|
@@ -96,7 +114,7 @@ Read `references/recon.md` and `references/scaffold.md`.
 1. Resolve the repo from cwd (`git rev-parse --show-toplevel`). Not in a repo
    and the idea does not name one → ask, once.
 2. Recon. Facts only, every claim carrying a path. Delegate breadth to parallel
-   read-only subagents; read the files that matter yourself.
+   read-only helpers if you have them; read the files that matter yourself.
 3. Write `design.md`: a facts-only **What I found**, then 6-9 tailored prompt
    sections, each ending in a bare `TODO` line.
 4. Copy it to `.shape/scaffold.md`. Write `state.json` at `stage: "scaffold"`.
