@@ -1,5 +1,9 @@
 # Carving phases
 
+Reconcile first. If `design.md` is newer than `reconciled_at` in `state.json`,
+stop and run stage 4. A contradiction carved into two packets becomes two
+agents building against each other, and the review loop cannot fix it.
+
 Start from **their** phase section. They already cut it once; your job is to
 argue with that cut, not to replace it. If you move a seam, say which one and
 why in one line.
@@ -37,12 +41,15 @@ handoff.
 
 Read `references/packet.md` and follow it exactly. Sections, in order:
 
-**Goal · Decided · Files · Approach · Do not touch · Acceptance · Done means ·
-Rules · Report back.**
+**Goal · Context · Decided · Files · Approach · Do not touch · Acceptance ·
+Done means · Rules · Report back.**
 
-`## Decided` carries the settled decisions from the loop. It is the reason this
-skill exists — without it, the executing agent reopens questions the user
-already closed.
+`## Context` points the cold agent at `design.md` and the log in `index.md`,
+and tells it to read both before starting. `## Decided` carries the settled
+decisions from the loop. Together they are the reason this skill exists —
+without them, the executing agent reopens questions the user already closed,
+or builds against the plan when an earlier phase already shipped something
+different.
 
 Copy the **Rules** and **Report back** blocks rather than paraphrasing them. The
 git prohibition is repeated there on purpose.
@@ -78,7 +85,16 @@ Design: `~/.shape/plans/upload-workspace-attribution/design.md`
 | 3 | Backfill 41k rows | historical uploads attributed | 2 merged | no |
 
 Out of scope: the admin dashboard. It owns its own query; tracked separately.
+
+## Log
+
+*Written by stage 7 as each phase merges. Empty until then.*
 ```
+
+The `## Log` section is empty at carve time and is the reason the index exists
+after carve time. Each merged phase gets an entry — where it merged, how it
+deviated from its packet, what that changes for later phases — and the next
+phase's drift check reads it. See `references/execute.md`.
 
 ## Review pass
 
