@@ -38,11 +38,12 @@ Six questions. Answer the ones the change touches; skip the rest.
 
 Delegate breadth, read depth yourself.
 
-- Fan out read-only subagents in parallel, one per question that needs
-  sweeping. Give each a narrow brief and tell it to return paths with one-line
-  facts.
+- Fan out read-only helpers in parallel if your agent has them (Claude Code
+  subagents, Codex spawned agents), one per question that needs sweeping. Give
+  each a narrow brief and tell it to return paths with one-line facts. Without
+  helpers, sweep with grep yourself and keep it to the questions that matter.
 - Then read the three to six files that actually matter, yourself. Do not write
-  recon from a subagent summary — subagents are wrong often enough to matter,
+  recon from a helper's summary — helpers are wrong often enough to matter,
   and a wrong fact in the scaffold sends the whole design sideways.
 - Live data beats a fixture. Say which one you read. A value from a test file or
   a config store is not the running system.
