@@ -29,13 +29,31 @@ so.
 
 ## Stacking
 
-Prefer sequential-on-main over a stack of dependent branches. Squash-merging a
-parent rewrites its commits, which breaks every child with phantom conflicts.
+On a GitHub repo a phase can ship as a **stacked pull request**: branched from
+phase N-1's branch, PR based on N-1's branch, so GitHub shows only its own diff
+and it can be built before its parent merges. That is an option per phase, not
+a mode for the plan. Nobody decides it here — carving records the facts the
+decision needs, and the user makes the call for each phase at handoff.
 
-Most runners branch each job off a fresh default-branch head, so a dependent
-phase dispatched before its parent merges is building against a tree that does
-not exist. Never dispatch phase N until N-1 has merged, and say so out loud at
-handoff.
+Facts to record per phase, in the index:
+- **Reversible?** A phase that cannot be reverted argues for building alone on
+  main after its parent merges, so a revert is one PR.
+- **Touches the parent's files?** Overlap is where a squash-merged parent gives
+  the child phantom conflicts. Note it.
+- **Needs CI before merge?** On some repos a draft PR based on a feature branch
+  gets no CI. The user needs to know before they stack a phase whose only
+  check is CI.
+
+Branch names come from the packet filename: `<slug>/01-upload-workspace-schema`.
+Phase 1 branches from the default branch. A later phase branches from its
+parent's branch if stacked, from the default branch if not.
+
+The squash-merge cascade — GitHub rebasing the child itself, or the phantom
+conflicts when it does not — is stage 7's job, in `references/execute.md`.
+
+Not on GitHub: sequential-on-main only. Never start phase N until N-1 has
+merged. Most runners branch off a fresh default-branch head, so a dependent
+phase started early is building against a tree that does not exist.
 
 ## The phase file is a packet
 
@@ -78,11 +96,15 @@ Slim. A map, not a summary of the design.
 
 Design: `~/.shape/plans/upload-workspace-attribution/design.md`
 
-| # | Phase | Ships | Start after | Reversible |
-|---|---|---|---|---|
-| 1 | Schema + write path behind flag | dark, nothing reads it | now | yes |
-| 2 | Reads switch to the new field | correct attribution | 1 merged | flag off |
-| 3 | Backfill 41k rows | historical uploads attributed | 2 merged | no |
+| # | Phase | Branch | Ships | Reversible | Overlaps parent | Sequencing |
+|---|---|---|---|---|---|---|
+| 1 | Schema + write path behind flag | `upload-workspace-attribution/01-schema-write-path` | dark, nothing reads it | yes | — | *decided at handoff* |
+| 2 | Reads switch to the new field | `upload-workspace-attribution/02-reads-new-field` | correct attribution | flag off | `finalize.ts` | *decided at handoff* |
+| 3 | Backfill 41k rows | `upload-workspace-attribution/03-backfill` | historical uploads attributed | **no** | none | *decided at handoff* |
+
+The **Sequencing** column is filled at handoff, one phase at a time, by the
+user: `stack on 1`, `after 1 merges`, or `alone on main`. Carving leaves it
+as shown.
 
 Out of scope: the admin dashboard. It owns its own query; tracked separately.
 

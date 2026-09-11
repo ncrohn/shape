@@ -28,9 +28,12 @@ earlier phases actually shipped, which may differ from what was planned.
 
 - Design: `~/.shape/plans/upload-workspace-attribution/design.md`
 - Phase log: `~/.shape/plans/upload-workspace-attribution/index.md`, `## Log`
+- Branch: `upload-workspace-attribution/02-reads-new-field`, from
+  `upload-workspace-attribution/01-schema-write-path` (stacked). Your working
+  tree is on it when you start; the parent's changes are already present.
 
-If this packet disagrees with either, stop and say so in your final message.
-Do not pick one side.
+If this packet disagrees with the design or the log, stop and say so in your
+final message. Do not pick one side.
 
 ## Decided
 

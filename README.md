@@ -73,11 +73,20 @@ self-contained enough to hand to an agent that starts cold.
 /shape execute upload-workspace-attribution
 ```
 
-Before it writes code, the session reads the design end to end, reads the log
-of what earlier phases actually shipped, and re-verifies the packet's file
-paths. After the phase merges, it writes the log entry the next phase will
-read. Phase 3 learns what phase 2 really did from disk, not from a session you
-had to keep alive.
+One phase per run, never more. Before it writes code, the session reads the
+design end to end, reads the log of what earlier phases actually shipped,
+re-verifies the packet's file paths, and asks whether the phase is still the
+right next move. After review it opens the pull request and writes the log
+entry the next phase will read. Phase 3 learns what phase 2 really did from
+disk, not from a session you had to keep alive.
+
+On GitHub, phases can ship as **stacked pull requests** — phase 2 branched from
+phase 1's branch, its PR based on phase 1, so each PR shows only its own diff
+and phase 2 can be built before phase 1 merges. That is decided per phase at
+handoff, by you, with the facts in front of you: whether it is reversible,
+whether it touches the parent's files, whether the repo runs CI on a PR based
+on a feature branch. When a parent squash-merges, `execute` checks whether
+GitHub rebased the child before touching anything.
 
 ## What it will not do
 

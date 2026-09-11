@@ -192,8 +192,12 @@ Nothing is dispatched until they have seen the slices.
 
 ## Stage 6 — Approval and handoff
 
-Read `references/handoff.md`. Ask how they want it built. Never dispatch phase N
-before N-1 has merged. Then report the paths and stop.
+Read `references/handoff.md`. Two decisions, both theirs, neither defaulted.
+First, sequencing — one phase at a time, not for the plan as a whole. On a
+GitHub repo a phase can be stacked on its parent's branch, wait for the parent
+to merge, or build alone on main; you state the facts the index recorded for
+that phase and they pick. Write each answer into the index. Second, who builds.
+Then report the paths and stop.
 
 ## Stage 7 — Execute a phase
 
@@ -201,10 +205,20 @@ Read `references/execute.md`. Entered by `execute`, usually from a fresh
 session — that is the design, not a limitation. Nothing is remembered; the
 record on disk is the oracle.
 
+**One phase per run.** Build it, log it, stop. Never roll into the next phase;
+whether it should start, and how, is the user's call with the log in front of
+them. Before anything: check the phase's sequencing against the parent's log
+entry, then say in a paragraph whether the facts that decision rested on have
+moved, and wait for a go.
+
 Before any code: the drift check. Read `design.md` end to end, read the log of
 what earlier phases actually shipped, re-verify the packet's Files. A stale
 packet is fixed first, with the user, never built on and corrected in review.
-After the merge: write the log entry in `index.md` — where it merged, how it
-deviated, what it changes for later phases — and update the remaining packets
-against it. Phase N inherits phase N-1's context through the log, not through
-a live session.
+Version control happens only with their go at this phase: branch from the
+parent's branch if stacked, otherwise the default branch; after review, commit,
+push, and open the PR with the parent as base. Then the log entry in `index.md`
+— branch, PR, how it deviated, what it changes for later phases — and the
+remaining packets updated against it. When a stacked phase's parent
+squash-merges, check whether GitHub rebased the child before touching it.
+Phase N inherits phase N-1's context through the log, not through a live
+session.
