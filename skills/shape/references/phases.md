@@ -103,8 +103,9 @@ Design: `~/.shape/plans/upload-workspace-attribution/design.md`
 | 2 | Reads switch to the new field | `upload-workspace-attribution/02-reads-new-field` | correct attribution | flag off | `finalize.ts` | stack on 1 |
 | 3 | Backfill 41k rows | `upload-workspace-attribution/03-backfill` | historical uploads attributed | **no** | none | stack on 2 |
 
-Carving fills the **Sequencing** column with the default, `stack on N-1`, for
-every phase after the first. At handoff the user can change any cell to
+On a GitHub repo, carving fills the **Sequencing** column with the default,
+`stack on N-1`, for every phase after the first. Off GitHub it fills
+`after N-1 merges` — stacking needs pull requests based on a branch. At handoff the user can change any cell to
 `after N-1 merges` or `alone on main`; phase 3 above is the kind they will
 want to look at.
 
@@ -145,7 +146,8 @@ nothing — do not leave an empty heading.
 
 When they answer: an approved call moves into the `## Decided` of every phase it
 touches; a struck call comes out of the packets, and its gap goes back to them
-as a question. Then delete the list. Execution agents read `index.md` and write
+as a question. Delete the list once every one of those questions is answered
+and written into the packets it affects. Execution agents read `index.md` and write
 pull request bodies from it, so an unapproved call must not survive there.
 
 ## Review pass

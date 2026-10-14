@@ -21,7 +21,9 @@ The three answers a cell can hold, on a GitHub repo:
 3. **Alone on main** — same as 2, but named so the log says why: the phase is
    not reversible, or its parent's merge has to settle first.
 
-Off GitHub, only 2 applies; skip the question and say so once.
+Off GitHub, only 2 applies. Carving already wrote `after N-1 merges` into
+every cell; if any cell says otherwise, rewrite it. Skip the question and say
+so once.
 
 The lines under a phase are facts only: "not reversible", "shares
 `finalize.ts` with phase 1 — a squash merge of 1 will conflict here", "this
@@ -76,8 +78,9 @@ answer is option 3.
 ## Fresh session
 
 One copyable line per phase, nothing else. The packet already says the rest.
-Print the form for the agent you are running in. Print the Codex form only when
-`command -v codex` succeeds — not everyone has it.
+Always print the form for the agent you are running in. Print the other
+agent's form too only when its CLI is installed (`command -v codex`,
+`command -v claude`) — not everyone has both.
 
 ```
 claude "/shape execute <slug> 1"

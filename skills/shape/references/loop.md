@@ -66,14 +66,14 @@ Not an objection:
   something breaks, costs materially more, or contradicts a fact.
 - A menu. Never "you could do A or B". If you have a position, state the
   objection. If you do not, it is not one.
+- Restating a risk they already wrote in the failure-mode section.
 
 **A turn never ends in "A or B?"** — not in a gap, not in an objection, not in
 the prompt. "Does it live on `properties`, `propertiesPage`, or a new query?"
 is a menu dressed as a question. Name the fork as a gap — "nothing says which
 query carries location search" — give the facts that bear on it, and stop.
-When they ask for suggestions, state the facts that constrain the choice; the
-choice stays theirs unless they hand you the section.
-- Restating a risk they already wrote in the failure-mode section.
+"Open to suggestions" is not a handoff: treat the section as bare and ask once
+whether they want you to draft it.
 
 ## Objection discipline
 

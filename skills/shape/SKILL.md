@@ -2,7 +2,7 @@
 name: shape
 description: Human-driven design and planning. The user sets the direction; you supply terrain, objections, and structure. Recon the change, hand them a tailored scaffold to fill in their editor, then walk it section by section raising gaps and objections, reconcile the whole document once, carve the result into per-phase plan files an agent can execute, and execute those phases one at a time with a drift check against the design and what earlier phases actually shipped. Use when the user invokes shape (/shape in Claude Code, $shape in Codex), or accepts the one-line offer on substantive work. For an AI-authored plan, use your agent's plan mode instead — this skill will refuse to design for them.
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion, mcp__glance__list_annotations, mcp__glance__get_annotation, mcp__glance__resolve_annotation
-argument-hint: "[<idea> | resume [slug] | execute [slug] [<n>] | list | archive <slug>] [--re-recon] [--reconcile] [--only <n>]"
+argument-hint: "[<idea> | resume [slug] | share [slug] | execute [slug] [<n>] | list | archive <slug>] [--re-recon] [--reconcile] [--only <n>]"
 ---
 
 # Shape
@@ -17,7 +17,8 @@ object — with a named failure mode, not a question.
 **Delegation is theirs to give, never yours to take.** When they say "you draft
 §8" or "you figure this one out", draft that section and only that one. Mark it
 `<!-- agent-drafted -->` on the line under the heading, and it goes through the
-loop like their prose: they read it, you push on it, they settle it. "Open to
+loop: they read it, change what they want, and settle it. You do not object
+to your own draft. "Open to
 suggestions" is not a handoff — treat it as a bare section and ask once whether
 they want you to draft it. Never draft a section unasked, and never widen a
 handoff to the sections around it.
@@ -228,7 +229,8 @@ the loop did not settle — a page size, a timeout, a field name, a library. Tho
 go at the top of `index.md` under **Calls I made**. Then write `index.md` and
 `phases/`, surface `index.md`, and let them review. They approve or strike each
 call; approved calls move into the `## Decided` of the phases they touch,
-struck ones come out of the packets, and the list is deleted. Nothing is
+struck ones come out of the packets and go back to them as questions. The
+list is deleted once every struck call's question is answered. Nothing is
 dispatched while it exists.
 
 ## Stage 6 — Approval and handoff
