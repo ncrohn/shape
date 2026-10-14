@@ -1,7 +1,7 @@
 {
   "name": "shape",
   "description": "Human-driven design and planning. You set the direction; the agent supplies terrain, objections, and structure, then carves the result into per-phase plan files an agent can execute. Runs in Claude Code and Codex.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Nick Crohn"
   },
