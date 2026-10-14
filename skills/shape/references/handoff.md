@@ -1,16 +1,18 @@
 # Approval and handoff
 
 Phases are approved. Two things get decided here, and the user decides both:
-how each phase is sequenced, and who builds. Do not assume and do not default.
+how each phase is sequenced, and who builds.
 
-## Sequencing — one phase at a time
+## Sequencing — stacked by default
 
-Nothing here is decided for the whole plan at once. Walk the index top to
-bottom. For each phase, state the facts the index recorded — reversible, files
-it shares with its parent, whether it needs CI before merge — in one or two
-lines, then ask. Phase 1 has no parent and needs no question.
+On a GitHub repo, every phase after the first starts as **stack on N-1**. Fill
+the index's **Sequencing** column that way, then show it once, with a line
+under any phase whose facts argue against a stack — not reversible, shares
+files with its parent, no CI on a PR based on a feature branch. Ask once
+whether to change any cell. They change the ones they want; the rest stay
+stacked. Phase 1 has no parent and needs no question.
 
-Three answers, on a GitHub repo:
+The three answers a cell can hold, on a GitHub repo:
 
 1. **Stack on N-1** — branch from the parent's branch, PR based on the parent's
    branch. Build can start once N-1 is logged **built**. Merge waits for N-1.
@@ -21,15 +23,19 @@ Three answers, on a GitHub repo:
 
 Off GitHub, only 2 applies; skip the question and say so once.
 
-Say one sentence per phase, only when it applies, and only facts: "not
-reversible", "shares `finalize.ts` with phase 1 — a squash merge of 1 will
-conflict here", "this repo runs no CI on a PR based on a feature branch". No
-recommendation. They pick. Write the answer into the index's **Sequencing**
-column before moving to the next phase.
+The lines under a phase are facts only: "not reversible", "shares
+`finalize.ts` with phase 1 — a squash merge of 1 will conflict here", "this
+repo runs no CI on a PR based on a feature branch". No recommendation beyond
+the default. Write their changes into the column before asking who builds.
+
+A stack on a squash-merge repo costs one thing every time: when a parent
+squash-merges, the child shows conflicts in the parent's own files. Say it once
+at handoff, in one line. Stage 7 handles it — `references/execute.md`.
 
 ## Who builds
 
-Ask one question, titled **Build it**, with these three options. Use a
+Ask one question, titled **Build it**, with these three options, plus any
+build option the personal context file adds. Use a
 structured question tool if your agent has one; otherwise a numbered list, then
 stop and wait.
 
@@ -70,7 +76,8 @@ answer is option 3.
 ## Fresh session
 
 One copyable line per phase, nothing else. The packet already says the rest.
-Print the form for the agent you are running in; if you cannot tell, print both.
+Print the form for the agent you are running in. Print the Codex form only when
+`command -v codex` succeeds — not everyone has it.
 
 ```
 claude "/shape execute <slug> 1"

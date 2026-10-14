@@ -24,16 +24,17 @@ Test each candidate:
 Dead-code-first is a legitimate phase: schema plus write path behind a flag,
 nothing reading it. Prefer it over a big-bang cut.
 
-Three to six phases. More than six and the design is really two projects — say
-so.
+As many phases as the seams call for. A long list is worth one line asking
+whether the design is really two projects — but cut where the tests above say
+to cut, not to hit a count.
 
 ## Stacking
 
 On a GitHub repo a phase can ship as a **stacked pull request**: branched from
 phase N-1's branch, PR based on N-1's branch, so GitHub shows only its own diff
-and it can be built before its parent merges. That is an option per phase, not
-a mode for the plan. Nobody decides it here — carving records the facts the
-decision needs, and the user makes the call for each phase at handoff.
+and it can be built before its parent merges. It is the default for every phase
+after the first, and the user can change any phase at handoff. Carving records
+the facts that argue against a stack, so they can see which ones to change.
 
 Facts to record per phase, in the index:
 - **Reversible?** A phase that cannot be reverted argues for building alone on
@@ -98,13 +99,14 @@ Design: `~/.shape/plans/upload-workspace-attribution/design.md`
 
 | # | Phase | Branch | Ships | Reversible | Overlaps parent | Sequencing |
 |---|---|---|---|---|---|---|
-| 1 | Schema + write path behind flag | `upload-workspace-attribution/01-schema-write-path` | dark, nothing reads it | yes | — | *decided at handoff* |
-| 2 | Reads switch to the new field | `upload-workspace-attribution/02-reads-new-field` | correct attribution | flag off | `finalize.ts` | *decided at handoff* |
-| 3 | Backfill 41k rows | `upload-workspace-attribution/03-backfill` | historical uploads attributed | **no** | none | *decided at handoff* |
+| 1 | Schema + write path behind flag | `upload-workspace-attribution/01-schema-write-path` | dark, nothing reads it | yes | — | — |
+| 2 | Reads switch to the new field | `upload-workspace-attribution/02-reads-new-field` | correct attribution | flag off | `finalize.ts` | stack on 1 |
+| 3 | Backfill 41k rows | `upload-workspace-attribution/03-backfill` | historical uploads attributed | **no** | none | stack on 2 |
 
-The **Sequencing** column is filled at handoff, one phase at a time, by the
-user: `stack on 1`, `after 1 merges`, or `alone on main`. Carving leaves it
-as shown.
+Carving fills the **Sequencing** column with the default, `stack on N-1`, for
+every phase after the first. At handoff the user can change any cell to
+`after N-1 merges` or `alone on main`; phase 3 above is the kind they will
+want to look at.
 
 Out of scope: the admin dashboard. It owns its own query; tracked separately.
 
@@ -117,6 +119,34 @@ The `## Log` section is empty at carve time and is the reason the index exists
 after carve time. Each merged phase gets an entry — where it merged, how it
 deviated from its packet, what that changes for later phases — and the next
 phase's drift check reads it. See `references/execute.md`.
+
+## Self-review, before they see it
+
+Re-read every packet against `design.md`, its own `## Decided`, and the Files
+you verified. Then list every value or choice you wrote that the loop did not
+settle: a page size, a timeout, a retry count, a field or branch name, a
+library, a boundary condition. Be strict — a number you picked because a packet
+needed one is exactly what belongs here.
+
+Put the list at the top of `index.md`:
+
+```markdown
+## Calls I made
+
+*Not settled in the loop. Approve or strike each; nothing is dispatched while
+this list exists.*
+
+- Phase 2 pages at 50 results — `design.md` §4 asks for paging but no size.
+- Phase 3 retries the backfill batch 3 times, then logs and skips.
+```
+
+Each call names the phase and the gap it filled. If there are none, write
+nothing — do not leave an empty heading.
+
+When they answer: an approved call moves into the `## Decided` of every phase it
+touches; a struck call comes out of the packets, and its gap goes back to them
+as a question. Then delete the list. Execution agents read `index.md` and write
+pull request bodies from it, so an unapproved call must not survive there.
 
 ## Review pass
 

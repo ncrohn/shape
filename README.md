@@ -65,7 +65,10 @@ this pass catches the places where §6's answer quietly changed what §2 settled
 before anything is carved from it.
 
 **6. It carves the design into phase files** — one shippable pull request each,
-self-contained enough to hand to an agent that starts cold.
+self-contained enough to hand to an agent that starts cold. Before you see
+them, it reviews its own packets and lists every value it had to pick that the
+loop never settled — a page size, a retry count — under **Calls I made**. You
+approve or strike each one; nothing is dispatched while the list exists.
 
 **7. You execute phases one at a time**, usually each in a fresh session:
 
@@ -82,15 +85,15 @@ disk, not from a session you had to keep alive.
 
 On GitHub, phases can ship as **stacked pull requests** — phase 2 branched from
 phase 1's branch, its PR based on phase 1, so each PR shows only its own diff
-and phase 2 can be built before phase 1 merges. That is decided per phase at
-handoff, by you, with the facts in front of you: whether it is reversible,
-whether it touches the parent's files, whether the repo runs CI on a PR based
-on a feature branch. When a parent squash-merges, `execute` checks whether
+and phase 2 can be built before phase 1 merges. Stacking is the default; at
+handoff you see the facts that argue against it for any phase — not
+reversible, touches the parent's files, no CI on a PR based on a feature
+branch — and change the ones you want. When a parent squash-merges, `execute` checks whether
 GitHub rebased the child before touching anything.
 
 ## What it will not do
 
-- Fill in a section for you
+- Fill in a section you did not hand it
 - Pick between forks on your behalf
 - Give you a menu of options with tradeoffs
 
@@ -98,8 +101,10 @@ When the agent disagrees it objects, with a named failure mode and a cited line 
 capped at two per section. Refute the premise and the objection is dropped, not
 downgraded and carried forward.
 
-If you want the agent to write the plan, use its plan mode. This skill will
-refuse.
+You can hand it a section by name — "you draft §8" — and it drafts that one,
+marks it as agent-drafted, and the loop treats it like your prose. It will not
+widen that to the sections around it. If you want the agent to write the whole
+plan, use its plan mode. This skill will refuse.
 
 ## Install
 
@@ -141,7 +146,9 @@ objections, and structure — never the decisions.
 **Offer it, don't start it.** When an ask touches more than one file *and* has a
 fork you can't resolve from the code, add exactly one line — "This looks like
 `/shape` work." — and then get on with the task if I don't take it. One offer
-per ask. Never repeat it, never wait for an answer.
+per ask. Never repeat it, never wait for an answer. Offer it before any code
+is written, and never in a message that also asks me a question or lays out
+options.
 
 Don't offer for: single-file changes, mechanical sweeps and renames however
 wide, test additions, or questions. Breadth alone is not a fork.
@@ -155,6 +162,11 @@ question does.
 
 Plans are written to `~/.shape/plans/<slug>/`, outside any repository. Set
 `SHAPE_PLANS_DIR` to move them.
+
+Set `SHAPE_CONTEXT_FILE` to a markdown file of your own setup — extra recon
+sources, a build runner to offer at handoff, where to file decisions. The skill
+reads it at the start of every run. It can add to the flow; it cannot override
+the rules above.
 
 They live outside the repo on purpose. A gitignored plan does not follow a new
 git worktree, so an execution agent working in one cannot read it. A committed
@@ -182,6 +194,7 @@ brew install ncrohn/glance/glance
 | `/shape archive <slug>` | retire a finished one |
 | `/shape --re-recon` | redo recon, keep your prose |
 | `/shape --reconcile` | re-read the whole design for contradictions, on demand |
+| `/shape share [slug]` | write the design up as an RFC for someone outside the loop |
 | `/shape --only <n>` | loop one section |
 
 In Codex, replace `/shape` with `$shape`. Everything after the skill name is
