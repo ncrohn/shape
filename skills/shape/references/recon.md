@@ -51,6 +51,22 @@ Delegate breadth, read depth yourself.
 Cap it. Recon is a means, not the deliverable. If it runs past roughly a dozen
 tool calls without changing what the scaffold will ask, stop and write.
 
+## Current state, when the change crosses services
+
+When the change touches two or more services or deployables, write
+`current-state.md` beside `design.md`. People ask for this map mid-design when
+it is missing. It holds two things, facts only, as of the commit you read:
+
+1. **Topology** — a mermaid diagram of who calls whom along the change's path:
+   services, queues, stores, and the auth each hop uses.
+2. **Control flow** — the path the changed operation takes today, step by step,
+   each step with a path and line.
+
+Head it `Facts only, as of <repo>@<short sha>. Nothing here is a proposal.` Link
+it from the top of **What I found**. It is theirs to annotate; an annotation on
+it is an answer like any other. It counts toward the recon cap — keep it to
+what the scaffold's forks need.
+
 ## What recon is not
 
 - Not a recommendation. "We should write it at finalize" is not a fact.

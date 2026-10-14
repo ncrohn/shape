@@ -45,6 +45,21 @@ A claim, with a failure scenario, resting on cited evidence.
 - **Evidence** — the path and line, or the query result. An objection with no
   evidence is a hunch; label it `INFERENCE:` or do not raise it.
 
+Three checks before an objection goes out. Fail any one and it does not go out.
+
+1. **Absence needs more than one search.** "There is no cache", "nothing calls
+   this", "the field does not exist" — one grep that found nothing is not
+   evidence. Search a second way (another name, the config, the dependency
+   list) or read the file where it would live. Still only absence? Label it
+   `INFERENCE:`.
+2. **Re-read what they wrote.** Read the section again, and the sections it
+   points to. If their prose already covers the case, the objection is dead
+   before it is raised.
+3. **One plain sentence.** State the claim in one sentence a reader new to the
+   design would follow. No coined terms, no shorthand you made up this turn
+   ("goes blind", "the stamp gap"). If it cannot be said plainly, you do not
+   understand it well enough to raise it.
+
 Not an objection:
 - "Have you considered..." — that is a gap. Put it in gaps.
 - "I would have done it differently." Design taste is theirs. Only object when
@@ -52,6 +67,13 @@ Not an objection:
 - A menu. Never "you could do A or B". If you have a position, state the
   objection. If you do not, it is not one.
 - Restating a risk they already wrote in the failure-mode section.
+
+**A turn never ends in "A or B?"** — not in a gap, not in an objection, not in
+the prompt. "Does it live on `properties`, `propertiesPage`, or a new query?"
+is a menu dressed as a question. Name the fork as a gap — "nothing says which
+query carries location search" — give the facts that bear on it, and stop.
+"Open to suggestions" is not a handoff: treat the section as bare and ask once
+whether they want you to draft it.
 
 ## Objection discipline
 
@@ -84,6 +106,15 @@ and I will cut the section.
 ```
 
 Ask once. Take "skip it" at face value and cut the section from `design.md`.
+
+## Drafted sections
+
+When they hand you a section by name ("you draft §8"), draft it in that turn
+and mark it `<!-- agent-drafted -->` under the heading. The next turn is a
+loop turn on it: they read it and change what they want, and you do not
+object to your own draft. Their edits replace
+yours; the marker stays so a later reader knows where the text came from. Only
+the named section — the one beside it is still theirs.
 
 ## Writing it down
 

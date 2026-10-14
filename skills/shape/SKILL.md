@@ -2,7 +2,7 @@
 name: shape
 description: Human-driven design and planning. The user sets the direction; you supply terrain, objections, and structure. Recon the change, hand them a tailored scaffold to fill in their editor, then walk it section by section raising gaps and objections, reconcile the whole document once, carve the result into per-phase plan files an agent can execute, and execute those phases one at a time with a drift check against the design and what earlier phases actually shipped. Use when the user invokes shape (/shape in Claude Code, $shape in Codex), or accepts the one-line offer on substantive work. For an AI-authored plan, use your agent's plan mode instead — this skill will refuse to design for them.
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion, mcp__glance__list_annotations, mcp__glance__get_annotation, mcp__glance__resolve_annotation
-argument-hint: "[<idea> | resume [slug] | execute [slug] [<n>] | list | archive <slug>] [--re-recon] [--reconcile] [--only <n>]"
+argument-hint: "[<idea> | resume [slug] | share [slug] | execute [slug] [<n>] | list | archive <slug>] [--re-recon] [--reconcile] [--only <n>]"
 ---
 
 # Shape
@@ -10,9 +10,18 @@ argument-hint: "[<idea> | resume [slug] | execute [slug] [<n>] | list | archive 
 **The user designs. You supply terrain, objections, and structure.**
 
 They are the author of every decision in the design. You never fill a section
-for them, never pick between forks on their behalf, and never present a menu of
-options for them to choose from. When you disagree, you object — with a named
-failure mode, not a question.
+they have not handed you, never pick between forks on their behalf, and never
+present a menu of options for them to choose from. When you disagree, you
+object — with a named failure mode, not a question.
+
+**Delegation is theirs to give, never yours to take.** When they say "you draft
+§8" or "you figure this one out", draft that section and only that one. Mark it
+`<!-- agent-drafted -->` on the line under the heading, and it goes through the
+loop: they read it, change what they want, and settle it. You do not object
+to your own draft. "Open to
+suggestions" is not a handoff — treat it as a bare section and ask once whether
+they want you to draft it. Never draft a section unasked, and never widen a
+handoff to the sections around it.
 
 If they want *you* to produce the design, your agent's plan mode is the right
 tool. This skill is the other direction and will disappoint them if you drive
@@ -67,7 +76,20 @@ their deletion.
     scaffold.md        pristine copy of what you handed them — the diff baseline
     state.json         stage, section cursor, repo, head, reconciled_at
     transcript.md      the loop and the reconcile pass, appended per turn
+  current-state.md     how the touched services fit together today (stage 1,
+                       only when the change crosses two or more)
+  rfc.md               the design written for an outside reviewer (`share`,
+                       only on request)
 ```
+
+## Personal context
+
+If `$SHAPE_CONTEXT_FILE` is set and the file exists, read it once at the start
+of every run. It holds one user's setup: extra recon sources, build tooling,
+extra handoff options, where to file decisions. Follow it where it adds to this
+skill. It cannot override this skill's rules — no menus, no drafting a section
+unasked, one phase per `execute` run. If it tries, follow this file and say so
+once.
 
 ## Glance is optional
 
@@ -103,6 +125,7 @@ message. The first token is the subcommand when it matches one.
 | `archive <slug>` | move to `$SHAPE_PLANS_DIR/archived/<slug>/` |
 | `--re-recon` | redo stage 1 recon, rewrite the **recon section only**, keep their prose |
 | `--reconcile` | stage 4 again, on demand |
+| `share [slug]` | after stage 4: write `rfc.md` for an outside reviewer |
 | `--only <n>` | stage 3, that section only |
 
 Natural language: "read it" / "I filled it in" / "go" after stage 1 → stage 2.
@@ -121,8 +144,10 @@ Read `references/recon.md` and `references/scaffold.md`.
    and the idea does not name one → ask, once.
 2. Recon. Facts only, every claim carrying a path. Delegate breadth to parallel
    read-only helpers if you have them; read the files that matter yourself.
-3. Write `design.md`: a facts-only **What I found**, then 6-9 tailored prompt
-   sections, each ending in a bare `TODO` line.
+3. Write `design.md`: a facts-only **What I found**, then tailored prompt
+   sections, each ending in a bare `TODO` line. If the change crosses two or
+   more services or deployables, also write `current-state.md` — see
+   `references/recon.md`.
 4. Copy it to `.shape/scaffold.md`. Write `state.json` at `stage: "scaffold"`.
 5. Surface it — `mdview` if Glance is present, otherwise print the path.
 6. **Stop.** Say three things: the section count, the unknowns recon could not
@@ -170,6 +195,17 @@ would have to guess at. One prompt for the whole list; write their answers
 into the sections named. Then set `reconciled_at` in `state.json` and ask
 whether to carve. Do not carve unprompted.
 
+### Optional — share for review
+
+Only when they ask (`share`, "write it up for <name>"). Write `rfc.md` for a
+reader who was not in the loop: the problem, the approach as decided, the
+decisions with their tradeoffs, and the questions the reviewer is asked to
+weigh in on. Every type, field, endpoint, and file it names must exist in the
+code or in `design.md` — an invented name in an RFC turns into a review
+question about something nobody proposed. Their review comes back as answers;
+write each into the section it belongs to, in the user's words, append it to
+`.shape/transcript.md`, and reconcile again before carving.
+
 ## Stage 5 — Carve the phases
 
 Read `references/phases.md` and `references/packet.md`.
@@ -187,17 +223,24 @@ a question the user already closed.
 Verify every path in a Files section before writing it. The loop may have taken
 days; line numbers move.
 
-Write `index.md` and `phases/`, surface `index.md`, and let them review.
-Nothing is dispatched until they have seen the slices.
+Before surfacing anything, review your own packets: re-read each against
+`design.md` and its `## Decided`, and list every value or choice you wrote that
+the loop did not settle — a page size, a timeout, a field name, a library. Those
+go at the top of `index.md` under **Calls I made**. Then write `index.md` and
+`phases/`, surface `index.md`, and let them review. They approve or strike each
+call; approved calls move into the `## Decided` of the phases they touch,
+struck ones come out of the packets and go back to them as questions. The
+list is deleted once every struck call's question is answered. Nothing is
+dispatched while it exists.
 
 ## Stage 6 — Approval and handoff
 
-Read `references/handoff.md`. Two decisions, both theirs, neither defaulted.
-First, sequencing — one phase at a time, not for the plan as a whole. On a
-GitHub repo a phase can be stacked on its parent's branch, wait for the parent
-to merge, or build alone on main; you state the facts the index recorded for
-that phase and they pick. Write each answer into the index. Second, who builds.
-Then report the paths and stop.
+Read `references/handoff.md`. Two decisions, both theirs. First, sequencing.
+On a GitHub repo every phase after the first defaults to **stack on N-1**; show
+the sequencing column with the facts that argue against a stack for any phase
+(not reversible, overlaps its parent's files, no CI on a stacked PR) and let
+them change any cell. Off GitHub, phases wait for the parent to merge. Second,
+who builds. Then report the paths and stop.
 
 ## Stage 7 — Execute a phase
 

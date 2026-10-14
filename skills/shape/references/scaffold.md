@@ -61,8 +61,9 @@ and the ordering problem they would otherwise discover at implementation time.
 **Never propose an answer in a prompt.** Not "presumably at finalize?" and not a
 list of options with tradeoffs. Name the fork, hand them the facts, stop.
 
-**Six to nine sections.** Fewer and you are not covering the design. More and
-they will not fill it. Cap the file at roughly 120 lines of scaffold.
+**As few sections as the design needs.** Every section is one the user has to
+write. Too few and the forks recon found go unasked; too many and they stop
+filling it. Prefer cutting a prompt's length over cutting a fork.
 
 ## Section selection
 
