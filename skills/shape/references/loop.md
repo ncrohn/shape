@@ -20,20 +20,27 @@ lookup you are describing needs a user context that isn't there. Today's
 derivation works precisely because it happens at read time, inside a
 request.
 
+Take: keep finalize, and stamp the workspace the uploader had at presign,
+carried in the upload record. It answers the gap without a session lookup.
+
 > _
 ```
 
-Four parts, in this order, then stop:
+Five parts, in this order, then stop:
 
 1. **You said** — one line, their position in their words. If you cannot state
    it in one line, they did not answer the section; say that instead.
 2. **Gaps** — what the section does not say that the next stage needs. A gap is
    a question. At most two.
 3. **Objections** — what you think is wrong. At most two.
-4. **The prompt.** Then stop. Do not answer your own objection.
+4. **Take** — a sentence or two: what you would write in this section and why. On a
+   section they filled, that is either "keep it as written" or the one change
+   you would make. A take is a suggestion, not an objection: it needs no
+   failure scenario, and they can ignore it.
+5. **The prompt.** Then stop. Do not answer your own objection.
 
-Skip any part with nothing in it. Never write "no gaps" or "nothing to object
-to" — silence says it.
+Skip any part with nothing in it, except the take, which every section gets.
+Never write "no gaps" or "nothing to object to" — silence says it.
 
 ## What an objection is
 
@@ -63,7 +70,8 @@ Three checks before an objection goes out. Fail any one and it does not go out.
 Not an objection:
 - "Have you considered..." — that is a gap. Put it in gaps.
 - "I would have done it differently." Design taste is theirs. Only object when
-  something breaks, costs materially more, or contradicts a fact.
+  something breaks, costs materially more, or contradicts a fact. A different
+  preference goes in the take, once, and they decide.
 - A menu. Never "you could do A or B". If you have a position, state the
   objection. If you do not, it is not one.
 - Restating a risk they already wrote in the failure-mode section.
@@ -71,7 +79,8 @@ Not an objection:
 **A turn never ends in "A or B?"** — not in a gap, not in an objection, not in
 the prompt. "Does it live on `properties`, `propertiesPage`, or a new query?"
 is a menu dressed as a question. Name the fork as a gap — "nothing says which
-query carries location search" — give the facts that bear on it, and stop.
+query carries location search" — give the facts that bear on it, then a
+`Take:` of a sentence or two saying which way you would go and why, and stop.
 "Open to suggestions" is not a handoff: treat the section as bare and ask once
 whether they want you to draft it.
 
@@ -99,6 +108,8 @@ A `TODO` that survived stage 2 gets one turn of its own:
 ```
 ── §5/7 · Rollout ── (empty)
 
+Take: <what you would write here, in a sentence or two, and why>
+
 Skipped, or not decided yet? If it is genuinely not applicable, say so
 and I will cut the section.
 
@@ -106,6 +117,7 @@ and I will cut the section.
 ```
 
 Ask once. Take "skip it" at face value and cut the section from `design.md`.
+Under a standing handoff, a bare section is drafted, not asked about.
 
 ## Drafted sections
 
@@ -114,7 +126,11 @@ and mark it `<!-- agent-drafted -->` under the heading. The next turn is a
 loop turn on it: they read it and change what they want, and you do not
 object to your own draft. Their edits replace
 yours; the marker stays so a later reader knows where the text came from. Only
-the named section — the one beside it is still theirs.
+the named section — the one beside it is still theirs, unless they gave a
+standing handoff ("draft the rest"). Then, after they settle this one, move to
+the next section in order: a filled one gets its normal loop turn, a bare one
+gets drafted. Never draft over a section they have started writing unless they
+hand you that section by name.
 
 ## Writing it down
 
@@ -129,7 +145,10 @@ Before advancing the cursor:
    left stale is the most common thing stage 4 finds, and the cheapest to fix
    here.
 4. Append the raw exchange to `.shape/transcript.md`.
-5. Bump `cursor` in `state.json`.
+5. Bump `cursor` in `state.json`. Record handoffs there too: `handoffs_in_row`
+   (reset to 0 when they write a section themselves), `handoff_offered` once
+   you have made the offer, and `handoff: "standing"` when they accept it or
+   say "draft the rest". Clear `handoff` when they take a section back.
 
 They can jump — "go back to section 3", "skip to phases". Follow it; move the
 cursor.

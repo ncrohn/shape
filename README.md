@@ -101,10 +101,17 @@ When the agent disagrees it objects, with a named failure mode and a cited line 
 capped at two per section. Refute the premise and the objection is dropped, not
 downgraded and carried forward.
 
+Every section it shows you ends with a short `Take:`: what it would write
+there, or "keep it as written". The take is a suggestion. You decide.
+
 You can hand it a section by name — "you draft §8" — and it drafts that one,
-marks it as agent-drafted, and the loop treats it like your prose. It will not
-widen that to the sections around it. If you want the agent to write the whole
-plan, use its plan mode. This skill will refuse.
+marks it as agent-drafted, and the loop treats it like your prose. After two
+handoffs in a row it offers once to draft the rest. Say yes, or "draft the
+rest", and it drafts the remaining bare sections one at a time, stopping for
+you to settle each. It never drafts over a section you have started, unless
+you hand it that section by name. If you
+want the agent to write the whole plan, use its plan mode. This skill will
+refuse.
 
 ## Install
 
