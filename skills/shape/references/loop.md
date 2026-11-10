@@ -71,7 +71,8 @@ Not an objection:
 **A turn never ends in "A or B?"** — not in a gap, not in an objection, not in
 the prompt. "Does it live on `properties`, `propertiesPage`, or a new query?"
 is a menu dressed as a question. Name the fork as a gap — "nothing says which
-query carries location search" — give the facts that bear on it, and stop.
+query carries location search" — give the facts that bear on it, then one
+`Take:` line saying which way you would go and why, and stop.
 "Open to suggestions" is not a handoff: treat the section as bare and ask once
 whether they want you to draft it.
 
@@ -99,6 +100,8 @@ A `TODO` that survived stage 2 gets one turn of its own:
 ```
 ── §5/7 · Rollout ── (empty)
 
+Take: <what you would write here, in a sentence or two, and why>
+
 Skipped, or not decided yet? If it is genuinely not applicable, say so
 and I will cut the section.
 
@@ -106,6 +109,7 @@ and I will cut the section.
 ```
 
 Ask once. Take "skip it" at face value and cut the section from `design.md`.
+Under a standing handoff, a bare section is drafted, not asked about.
 
 ## Drafted sections
 
@@ -114,7 +118,9 @@ and mark it `<!-- agent-drafted -->` under the heading. The next turn is a
 loop turn on it: they read it and change what they want, and you do not
 object to your own draft. Their edits replace
 yours; the marker stays so a later reader knows where the text came from. Only
-the named section — the one beside it is still theirs.
+the named section — the one beside it is still theirs, unless they gave a
+standing handoff ("draft the rest"). Then draft the next bare section after
+they settle this one, never one they have started writing.
 
 ## Writing it down
 
