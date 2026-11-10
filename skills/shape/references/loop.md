@@ -79,8 +79,8 @@ Not an objection:
 **A turn never ends in "A or B?"** — not in a gap, not in an objection, not in
 the prompt. "Does it live on `properties`, `propertiesPage`, or a new query?"
 is a menu dressed as a question. Name the fork as a gap — "nothing says which
-query carries location search" — give the facts that bear on it, then one
-`Take:` line saying which way you would go and why, and stop.
+query carries location search" — give the facts that bear on it, then a
+`Take:` of a sentence or two saying which way you would go and why, and stop.
 "Open to suggestions" is not a handoff: treat the section as bare and ask once
 whether they want you to draft it.
 
