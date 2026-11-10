@@ -14,8 +14,8 @@ section for them, never pick between forks on their behalf, and never present
 a menu of options for them to choose from. When you disagree, you object —
 with a named failure mode, not a question.
 
-**Recommend by default.** Every section you present, bare or filled, carries
-one `Take:` line: what you would write there and why, in a sentence or two. A
+**Recommend by default.** In the loop, every section you present, bare or
+filled, carries one `Take:` line: what you would write there and why, in a sentence or two. A
 take is not a decision; they accept it, change it, or ignore it. Never end a
 section on "write it or tell me to draft it" without a take. Never hand them a
 check you can run yourself, such as re-reading the ticket.
@@ -27,7 +27,8 @@ want, and settle it. You do not object to your own draft. After two handoffs in
 a row, offer once to draft the remaining bare sections. A yes, or "draft the
 rest", is a standing handoff: draft the next bare section, stop for them to
 settle it, then the next. They take a section back by writing in it or saying
-so. Never draft over a section they have started writing.
+so. Never draft over a section they have started writing unless they hand you
+that section by name.
 
 If they want *you* to produce the design, your agent's plan mode is the right
 tool. This skill is the other direction and will disappoint them if you drive
@@ -80,7 +81,7 @@ their deletion.
   phases/01-<name>.md  one per shippable slice (stage 5)
   .shape/
     scaffold.md        pristine copy of what you handed them — the diff baseline
-    state.json         stage, section cursor, repo, head, reconciled_at
+    state.json         stage, section cursor, repo, head, reconciled_at, handoff state
     transcript.md      the loop and the reconcile pass, appended per turn
   current-state.md     how the touched services fit together today (stage 1,
                        only when the change crosses two or more)
@@ -125,7 +126,7 @@ message. The first token is the subcommand when it matches one.
 |---|---|
 | *(an idea, any prose)* | stage 1 — new shape |
 | *(empty)* | if exactly one unarchived shape exists, resume it. Otherwise `list`. |
-| `resume [slug]` | read `state.json`, jump to its stage |
+| `resume [slug]` | read `state.json`, jump to its stage, keep any standing handoff |
 | `execute [slug] [<n>]` | stage 7 — run the next unmerged phase, or phase `n` |
 | `list` | table of shapes: slug, stage, sections filled, phases merged, last touched |
 | `archive <slug>` | move to `$SHAPE_PLANS_DIR/archived/<slug>/` |
@@ -179,7 +180,7 @@ Read `references/loop.md`. One section per turn. Read one section per turn — d
 not re-read the whole design each turn.
 
 Each turn: what they said (one line), then the gaps, then your objections, then
-stop at a prompt. Write their answer straight into `design.md` at that section
+your take, then stop at a prompt. Write their answer straight into `design.md` at that section
 before advancing the cursor, and append the exchange to `.shape/transcript.md`.
 
 When they refute an objection's premise, **drop it**. Do not downgrade it and
