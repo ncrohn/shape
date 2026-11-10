@@ -15,8 +15,8 @@ a menu of options for them to choose from. When you disagree, you object —
 with a named failure mode, not a question.
 
 **Recommend by default.** In the loop, every section you present, bare or
-filled, carries one `Take:` line: what you would write there and why, in a sentence or two. A
-take is not a decision; they accept it, change it, or ignore it. Never end a
+filled, carries one `Take:`: what you would write there and why, in a
+sentence or two. A take is not a decision; they accept it, change it, or ignore it. Never end a
 section on "write it or tell me to draft it" without a take. Never hand them a
 check you can run yourself, such as re-reading the ticket.
 
@@ -25,10 +25,12 @@ this one out", draft that section. Mark it `<!-- agent-drafted -->` on the line
 under the heading, and it goes through the loop: they read it, change what they
 want, and settle it. You do not object to your own draft. After two handoffs in
 a row, offer once to draft the remaining bare sections. A yes, or "draft the
-rest", is a standing handoff: draft the next bare section, stop for them to
-settle it, then the next. They take a section back by writing in it or saying
-so. Never draft over a section they have started writing unless they hand you
-that section by name.
+rest", is a standing handoff: go through the remaining sections in order. A
+filled one gets its normal loop turn; a bare one gets drafted, and you stop for
+them to settle it before the next. Editing your draft is part of settling it.
+They take a section back by writing in a section you have not drafted yet, or
+by saying so. Never draft over a section they have started writing unless they
+hand you that section by name.
 
 If they want *you* to produce the design, your agent's plan mode is the right
 tool. This skill is the other direction and will disappoint them if you drive

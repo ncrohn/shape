@@ -33,7 +33,7 @@ Five parts, in this order, then stop:
 2. **Gaps** — what the section does not say that the next stage needs. A gap is
    a question. At most two.
 3. **Objections** — what you think is wrong. At most two.
-4. **Take** — one line: what you would write in this section and why. On a
+4. **Take** — a sentence or two: what you would write in this section and why. On a
    section they filled, that is either "keep it as written" or the one change
    you would make. A take is a suggestion, not an objection: it needs no
    failure scenario, and they can ignore it.
